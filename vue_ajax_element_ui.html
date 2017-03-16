@@ -1,0 +1,193 @@
+CTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+
+    <link rel="stylesheet" type="text/css" href="css/reset.css">
+    <link href="//netdna.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    <!--<link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-default/index.css">-->
+    <link rel="stylesheet" href="css/element-ui.css">
+    <link rel="stylesheet/less" type="text/css" href="css/components.less">
+    <script src="js/less.min.js"></script>
+</head>
+<body>
+<div id="app">
+    <div class="main-content">
+        <div class="search-module">
+            <el-form
+                    :inline="true"
+                    :model="formData"
+                    label-position="left"
+                    label-width="75px"
+                    class="demo-form-inline">
+                <el-form-item label="关键词:">
+                    <el-input v-model="formData.keyword" placeholder="关键词"></el-input>
+                </el-form-item>
+                <el-form-item label="平台:">
+                    <el-select v-model="formData.platform" placeholder="请选择">
+                        <el-option label="区域一" value="shanghai"></el-option>
+                        <el-option label="区域二" value="beijing"></el-option>
+                    </el-select>
+                </el-form-item>
+                <el-form-item label="店铺:">
+                    <el-select v-model="formData. store" placeholder="请选择">
+                        <el-option label="区域一" value="shanghai"></el-option>
+                        <el-option label="区域二" value="beijing"></el-option>
+                    </el-select>
+                </el-form-item>
+                <el-form-item label="状态:">
+                    <el-select v-model="formData.state" placeholder="请选择">
+                        <el-option label="区域一" value="shanghai"></el-option>
+                        <el-option label="区域二" value="beijing"></el-option>
+                    </el-select>
+                </el-form-item>
+                <el-form-item label="添加人:">
+                    <el-select v-model="formData.people" placeholder="请选择">
+                        <el-option label="区域一" value="shanghai"></el-option>
+                        <el-option label="区域二" value="beijing"></el-option>
+                    </el-select>
+                </el-form-item>
+                <el-form-item label="活动时间:">
+                    <el-date-picker v-model="formData.date" type="daterange" placeholder="选择日期范围">
+                    </el-date-picker>
+                </el-form-item>
+                <el-form-item>
+                    <el-button type="primary" @click="onSubmit">查询</el-button>
+                </el-form-item>
+            </el-form>
+        </div>
+        <div class="operation-module">
+            <button type="button" class="o-btn"><i class="fa fa-clone"></i>复制</button>
+            <button type="button" class="o-btn"><i class="fa fa-plus"></i>创建任务</button>
+            <button type="button" class="o-btn"><i class="fa fa-share-square-o"></i>导出</button>
+        </div>
+        <div class="table-module">
+            <template>
+                <el-table
+                        :data="tableData3"
+                        :stripe="true"
+                        height=""
+                        border
+                        style="width: 100%">
+                    <el-table-column type="selection" width="55" align="center">
+                    </el-table-column>
+                    <el-table-column type="index" label="序号" width="50" align="center">
+                    </el-table-column>
+                    <el-table-column label="图片" width="60" align="center">
+                        <template scope="scope">
+                            <img :src="scope.row.src">
+                        </template>
+                    </el-table-column>
+                    <el-table-column label="编码" width="180" align="left">
+                        <template scope="scope">
+                            <p>{{scope.row.id}}</p>
+                            <a class="alink" href="#">{{scope.row.asin}}</a>
+                        </template>
+                    </el-table-column>
+                    <el-table-column prop="pingtai" label="平台名称" width="100" align="center">
+                    </el-table-column>
+                    <el-table-column prop="store" label="店铺"  align="center">
+                    </el-table-column>
+                    <el-table-column label="任务类型" width="70" align="center">
+                        <template scope="scope">
+                            <span>{{scope.row.type}}</span>
+                        </template>
+                    </el-table-column>
+                    <el-table-column label="状态" width="70" align="center">
+                        <template scope="scope">
+                            <span v-if="scope.row.state==1" class="state blue"><i></i>待审核</span>
+                            <span v-if="scope.row.state==2" class="state blue"><i></i>待确认</span>
+                            <span v-if="scope.row.state==3" class="state going"><i></i>已审核</span>
+                            <span v-if="scope.row.state==4" class="state wrong"><i></i>已审核</span>
+                            <span v-if="scope.row.state==5" class="state wrong"><i></i>已驳回</span>
+                            <span v-if="scope.row.state==6" class="state wrong"><i></i>已过期</span>
+                        </template>
+                    </el-table-column>
+                    <el-table-column label="任务周期" align="center">
+                        <template scope="scope">
+                            <span>{{scope.row.startDate}}</span>&nbsp;至
+                            <span>{{scope.row.endDate}}</span>
+                        </template>
+                    </el-table-column>
+                    <el-table-column label="需求数/完成数" width="100" align="center">
+                        <template scope="scope">
+                            <span>{{scope.row.xuqiu}}</span>/<a href="#" class="alink">{{scope.row.wancheng}}</a>
+                        </template>
+                    </el-table-column>
+                    <el-table-column label="上评数" width="70" align="center">
+                        <template scope="scope">
+                            <span>{{scope.row.shangping}}</span>/<a href="#" class="alink">{{scope.row.shangping2}}</a>
+                        </template>
+                    </el-table-column>
+                    <el-table-column label="FeedBack数" width="90" align="center">
+                        <template scope="scope">
+                            <span>{{scope.row.feedback}}</span>/<a  href="#" class="alink">{{scope.row.feedback2}}</a>
+                        </template>
+                    </el-table-column>
+                    <el-table-column prop="pay" label="支出合计" width="70" align="center">
+                    </el-table-column>
+                    <el-table-column prop="date" label="创建时间" align="center">
+                    </el-table-column>
+                    <el-table-column label="操作" width="" align="center">
+                        <template scope="scope">
+                            <a href="#" class="alink">修改</a>|
+                            <a href="#" class="alink">审核</a>|
+                            <a href="#" class="alink">删除</a>|
+                            <a href="#" class="alink">频率</a>|
+                            <a href="#" class="alink">详情</a>
+                        </template>
+                    </el-table-column>
+                </el-table>
+            </template>
+        </div>
+    </div>
+
+</div>
+
+
+<!-- js -->
+<script src="js/jquery-2.1.4.min.js"></script>
+<script src="js/vue.js"></script>
+<script src="js/vue-resource.js"></script>
+<!--<script src="https://unpkg.com/element-ui/lib/index.js"></script>-->
+<script src="js/element-ui.js"></script>
+
+<!-- main.js -->
+<script>
+  var Main = {
+    data: function () {
+      return {
+        formData: {
+          keyword: '',
+          platform: '',
+          store: '',
+          state: '',
+          people: '',
+          date: '',
+        },
+        tableData3: []
+      }
+    },
+    methods: {
+      onSubmit: function () {
+        console.log('submit!');
+      }
+    },
+    created:function(){
+	
+		$.ajax({
+			url: 'test.php',			
+		}).done((res) => {
+			console.log(res);
+			this.tableData3 =  JSON.parse(res);
+		});
+    }
+  };
+  var Ctor = Vue.extend(Main);
+  new Ctor().$mount('#app');
+</script>
+
+</body>
+</html>
+
