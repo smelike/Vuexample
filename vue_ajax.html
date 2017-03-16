@@ -1,0 +1,47 @@
+v id="app">
+		<ol>
+			<li v-for="person in people">
+				{{ person.name }} || {{ person.age }} || {{ person.eyeColor }}
+			</li>
+		</ol>
+	</div>
+	
+	var app = new Vue({
+		//router,
+		data: {
+			people: null
+		},
+		created: function() {
+			
+			$.ajax({
+				url: 'test.php',			
+			}).done((res) =>{
+				//console.log(res);
+				this.people = JSON.parse(res);
+				//console.log('124234234523');
+				//console.log(this.people.name);
+			});
+		}
+	}).$mount('#app');
+	
+	
+	```
+	I have an request to get some data and add it to a variable,
+
+	When I use:
+
+	.then(function(response) {
+		this.persons = response.data;
+	});
+	It does not assign response.data to this.persons but when I do the following:
+
+	.then(response => this.persons = response.data);
+	It assigns it fine to use. Please see the js fiddle: https://jsfiddle.net/trhhtyxr/2/
+
+
+
+	As I have explained it here, arrow syntax does not bind it's own this, arguments, super, or new.target. Arrow functions are always anonymous. These function expressions are best suited for non-method functions.
+
+	Scope of this changes inside a function() block and it does not refer to the currently executing function, while with arrow function, this refers to the currently executing function only.
+	
+	```
